@@ -4,6 +4,7 @@ import (
 	"context"
 	"docker-scale-service/internal/config"
 	"docker-scale-service/internal/config/env"
+	"docker-scale-service/internal/usecase"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/log"
@@ -14,11 +15,14 @@ import (
 )
 
 type server struct {
-	app     *fiber.App
+	app *fiber.App
+
 	httpCfg config.HTTPConfig
+
+	uc *usecase.DockerScaleUseCase
 }
 
-func NewHttpServer(_ context.Context) *server {
+func NewHttpServer(_ context.Context, uc *usecase.DockerScaleUseCase) *server {
 	app := fiber.New(
 		fiber.Config{
 			AppName: "Docker Swarm Auto-Scale Service App",
@@ -62,6 +66,7 @@ func NewHttpServer(_ context.Context) *server {
 	s := &server{
 		app:     app,
 		httpCfg: httpCfg,
+		uc:      uc,
 	}
 
 	s.initRoutes()
@@ -69,6 +74,7 @@ func NewHttpServer(_ context.Context) *server {
 	return s
 }
 
+// logLevel returns fiber log level
 func logLevel(level string) log.Level {
 	switch level {
 	case "debug":

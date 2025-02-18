@@ -21,10 +21,7 @@ type App struct {
 func NewApp(ctx context.Context) (*App, error) {
 	a := &App{}
 
-	ctxWithTimeout, cancel := context.WithTimeout(ctx, 20)
-	defer cancel()
-
-	err := a.initDeps(ctxWithTimeout)
+	err := a.initDeps(ctx)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -82,9 +79,15 @@ func (app *App) initLogger(ctx context.Context) error {
 	return nil
 }
 
+// initUseCase initializes use case of the application
+func (app *App) initUseCase(ctx context.Context) error {
+	app.uc = usecase.NewUseCase(ctx)
+	return nil
+}
+
 // initHTTPServer initializes HTTP server
 func (app *App) initHTTPServer(ctx context.Context) error {
-	app.httpServer = http_v1.NewHttpServer(ctx)
+	app.httpServer = http_v1.NewHttpServer(ctx, app.uc)
 	return nil
 }
 

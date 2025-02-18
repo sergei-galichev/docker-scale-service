@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	services "docker-scale-service/internal/service"
 	dockerScale "docker-scale-service/internal/service/docker-scale"
 )
@@ -9,8 +10,7 @@ type DockerScaleUseCase struct {
 	dockerScaleService services.DockerScaleServiceInterface
 }
 
-func NewUseCase() *DockerScaleUseCase {
-
+func NewUseCase(ctx context.Context) *DockerScaleUseCase {
 	return &DockerScaleUseCase{}
 }
 

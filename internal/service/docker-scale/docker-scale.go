@@ -6,6 +6,7 @@ import (
 	"docker-scale-service/pkg/constant"
 	"fmt"
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/api/types/swarm"
 	"github.com/pkg/errors"
 )
@@ -56,6 +57,14 @@ func (s *service) ScaleServiceReplicas(
 	}
 
 	return nil
+}
+
+func (s *service) ListServices(ctx context.Context, f filters.Args) ([]*entity.SwarmService, error) {
+	//var serviceList []*entity.SwarmService
+
+	//services, err := s.dockerClient.ServiceList(ctx, types.ServiceListOptions{Filters: f})
+
+	return nil, nil
 }
 
 // printAllSwarmResponseWarnings prints all swarm response warnings when updating swarm.Service
